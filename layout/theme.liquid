@@ -1,0 +1,168 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+
+  <!-- Basic page needs ================================================== -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  {% if settings.favicon %}
+  <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
+  {% endif %}
+
+  <!-- Title and description ================================================== -->
+  {%- comment smartseo_integration_begin_meta_data -%}<title>
+  {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>{%- endcomment smartseo_integration_end_meta_data -%}
+
+{% if request.path == "/collections"%}
+  {%- comment smartseo_integration_begin_meta_data -%}<meta name="description" content="Explore everything you need in an online baby store: baby gear, nursery items, clothing, feeding, bath, and gifts. Get all your baby accessories at reasonable prices!">{%- endcomment smartseo_integration_end_meta_data -%}
+{% else %} 
+  {% if page_description %}
+  {%- comment smartseo_integration_begin_meta_data -%}<meta name="description" content="{{ page_description | escape }}">{%- endcomment smartseo_integration_end_meta_data -%}
+  {% endif %}
+{% endif %}
+  
+  <!-- Social meta ================================================== -->
+  {% include 'social-meta-tags' %}
+
+  <!-- Helpers ================================================== -->
+  <link rel="canonical" href="{{ canonical_url }}">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_primary }}">
+
+  <!-- CSS ================================================== -->
+  {{ 'timber.scss.css' | asset_url | stylesheet_tag }}
+  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+
+  <script>
+    window.theme = window.theme || {};
+
+    var theme = {
+      strings: {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }},
+        zoomClose: {{ "products.zoom.close" | t | json }},
+        zoomPrev: {{ "products.zoom.prev" | t | json }},
+        zoomNext: {{ "products.zoom.next" | t | json }},
+        addressError: {{ 'map.errors.address_error' | t | json }},
+        addressNoResults: {{ 'map.errors.address_no_results' | t | json }},
+        addressQueryLimit: {{ 'map.errors.address_query_limit_html' | t | json }},
+        authError: {{ 'map.errors.auth_error_html' | t | json }}
+      },
+      settings: {
+        // Adding some settings to allow the editor to update correctly when they are changed
+        enableWideLayout: {{ settings.enable_wide_layout }},
+        typeAccentTransform: {{ settings.type_accent_transform }},
+        typeAccentSpacing: {{ settings.type_accent_spacing }},
+        baseFontSize: '{{ settings.type_base_size }}',
+        headerBaseFontSize: '{{ settings.type_header_size }}',
+        accentFontSize: '{{ settings.type_accent_size }}'
+      },
+      variables: {
+        mediaQueryMedium: 'screen and (max-width: 768px)',
+        bpSmall: false
+      },
+      moneyFormat: {{ shop.money_format | json }}
+    }
+
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'supports-js');
+  </script>
+
+  <!-- Header hook for plugins ================================================== -->
+  {{ content_for_header }}
+
+  {% include 'oldIE-js' %}
+
+  {{ 'jquery-2.2.3.min.js' | asset_url | script_tag }}
+
+  <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'lazysizes.min.js' | asset_url }}" async="async"></script><!--<![endif]-->
+  <!--[if lte IE 9]><script src="{{ 'lazysizes.min.js' | asset_url }}"></script><![endif]-->
+
+  {% comment %}
+    If you store has customer accounts disabled, you can remove the following JS file
+  {% endcomment %}
+  {% if template.directory == 'customers' %}
+    {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+  {% endif %}
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R436T3ZQT8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R436T3ZQT8');
+</script>
+  
+<script>
+window.mlvedaShopCurrency = "{{ shop.currency }}";
+window.shopCurrency = "{{ shop.currency }}";
+window.supported_currencies = "{{ settings.mlvedaACS_supportedCurrencies }}";
+</script>
+  
+  
+  <script type="application/ld+json">
+{
+"@context": "https://schema.org",
+"@id": "https://alphababiesstore.com/#organization",
+"@type": "Organization",
+"name": "Alpha Babies Store",
+"url": "https://alphababiesstore.com/",
+"logo": "https://cdn.shopify.com/s/files/1/0043/4667/5298/files/Alpha_babies_store_logo_2_900x.png?v=1536808265",
+"description": "Little essentials for Mommies and Babies. Everything you need in online baby store: baby gear, nursery items, clothing, feeding, bath, and gifts. Get all your baby accessories. Take care of your little one easily!",
+"email": "info@alphababiesstore.com",
+"contactPoint":
+{
+"@type": "ContactPoint",
+"telephone": "+1 (213) 328-0622",
+"contactType": "customer support",
+"areaServed":"US"
+},
+"sameAs":
+[
+"https://www.facebook.com/alphababiesstore/",
+"https://www.instagram.com/alphababiesstore/"
+]
+}
+</script>
+
+  <script async defer src="https://tools.luckyorange.com/core/lo.js?site-id=164cb2cb"></script>
+  <meta name="google-site-verification" content="vQONokO31GEPAA1QiCp_gf56Ft-vRVjk2GvJeRsnTXs" />
+ <!-- Google Webmaster Tools Site Verification -->
+<meta name="google-site-verification" content="gqUhjXwHOxqfeJQWPidNThP5w7AypWmmzCSfb8ra7Us" />
+</head>
+
+<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" >
+
+  {% section 'header' %}
+
+  <main class="wrapper main-content" role="main">
+    <div class="grid">
+        <div class="grid__item">
+          {{ content_for_layout }}
+        </div>
+    </div>
+  </main>
+
+  {% section 'footer' %}
+
+  {% if template.name == 'product' or template.name == 'index' %}
+    {{ 'option_selection.js' | shopify_asset_url | script_tag }}
+  {% endif %}
+
+  {{ 'theme.js' | asset_url | script_tag }}
+
+
+<!-- **BEGIN** Hextom USB Integration // Main Include - DO NOT MODIFY -->
+    {% include 'hextom_usb_main' %}
+    <!-- **END** Hextom USB Integration // Main Include - DO NOT MODIFY -->
+{% include 'mlveda-currencies-switcher' %}{% include 'mlveda-currencies' %}<!-- Delete the Beeketing script below after uninstalling Happy Messenger app to remove it from your theme. For more info, read here: https://bit.ly/hmesscode or contact us at hi@beeketing.com. --><!-- BEEKETINGSCRIPT CODE START -->{% include 'bk-tracking' %}<!-- BEEKETINGSCRIPT CODE END --><script>var check_edd_data_from_liquid = '1';</script>{% render 'edd_read_data_from_liquid' %}</body>
+</html>
+{% include 'estimated-delivery-days'%}
